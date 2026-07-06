@@ -41,7 +41,7 @@ public class MediaEntry
     }
 
     // Constructor for Board Game entries
-    public MediaEntry(int entryId, String title, String genre, String status, Boardgame boardGameDetails) 
+    public MediaEntry(int entryId, String title, String genre, String status, BoardGame boardGameDetails) 
     {
         this.entryId = entryId;
         this.title = title;
@@ -52,6 +52,56 @@ public class MediaEntry
         this.rating = -1; // -1 indicates unrated initially
         this.review = ""; // makes sure that review is empty, not null
     }
-    
+
+    // Getters
+    public int getEntryId() 
+    {
+        return entryId;
+    }
+
+    public String getTitle() 
+    {
+        return title;
+    }
+
+    public String getGenre() 
+    {
+        return genre;
+    }
+
+    public String getStatus() 
+    {
+        return status;
+    }
+
+    public int getRating() 
+    {
+        return rating;
+    }
+
+    public String getReview() 
+    {
+        return review;
+    }
+
+    public String getMediaType() 
+    {
+        return mediaType;
+    }
+
+    public Anime getAnimeDetails() 
+    {
+        return animeDetails;
+    }
+
+    public Movie getMovieDetails() 
+    {
+        return movieDetails;
+    }
+
+    public BoardGame getBoardGameDetails() 
+    {
+        return boardGameDetails;
+    }
 
 }
