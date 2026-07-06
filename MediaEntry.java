@@ -130,4 +130,40 @@ public class MediaEntry
         return !this.status.equalsIgnoreCase("plan to watch") && !this.status.equalsIgnoreCase("plan to play");
     }
 
+    // Submits a standard score out of 10 and a corresponding written review text.
+    public boolean setRatingAndReview(int rating, String review) 
+    {
+        if (canBeRated() && rating >= 1 && rating <= 10) 
+        {
+            this.rating = rating;
+            this.review = review;
+            return true;
+        }
+        return false;
+    }
+
+    // Helper returning whether a valid score has been added to this container.
+    public boolean hasRating() 
+    {
+        return this.rating != -1;
+    }
+
+    // Pulls information from whichever internal format is loaded.
+    public String getSpecificDetails() 
+    {
+        if (mediaType.equals("Anime") && animeDetails != null) 
+        {
+            return animeDetails.getDetails();
+        } 
+        else if (mediaType.equals("Movie") && movieDetails != null) 
+        {
+            return movieDetails.getDetails();
+        } 
+        else if (mediaType.equals("BoardGame") && boardGameDetails != null) 
+        {
+            return boardGameDetails.getDetails();
+        }
+        return "No specific details available.";
+    }
+
 }
