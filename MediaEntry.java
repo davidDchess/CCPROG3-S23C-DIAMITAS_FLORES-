@@ -104,4 +104,30 @@ public class MediaEntry
         return boardGameDetails;
     }
 
+    // Validates if the given status string is allowed in the application.
+    public boolean isValidStatus(String status) 
+    {
+        if (status == null) 
+            return false;
+        String s = status.trim().toLowerCase();
+        return s.equals("plan to watch") || s.equals("watching") || s.equals("plan to play") || s.equals("playing") || s.equals("completed") || s.equals("dropped");
+    }
+
+    // Updates the media status if the new status passes validation.
+    public boolean updateStatus(String newStatus) 
+    {
+        if (isValidStatus(newStatus)) 
+        {
+            this.status = newStatus;
+            return true;
+        }
+        return false;
+    }
+
+    // Logic helper checking if an item is eligible for evaluation (e.g., not completely unplayed/unwatched).
+    public boolean canBeRated() 
+    {
+        return !this.status.equalsIgnoreCase("plan to watch") && !this.status.equalsIgnoreCase("plan to play");
+    }
+
 }
