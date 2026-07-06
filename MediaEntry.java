@@ -165,5 +165,19 @@ public class MediaEntry
         }
         return "No specific details available.";
     }
-
+    
+    // Displays standard details combined cleanly alongside specific child data.
+    public String toString() 
+    {
+        String base = "[" + mediaType + "] ID: " + entryId + " | Title: " + title + " | Genre: " + genre + " | Status: " + status;
+        if (hasRating()) 
+        {
+            base += " | Rating: " + rating + "/10 | Review: \"" + review + "\"";
+        } 
+        else 
+        {
+            base += " | Rating: Unrated";
+        }
+        return base + "\n    -> " + getSpecificDetails();
+    }
 }
