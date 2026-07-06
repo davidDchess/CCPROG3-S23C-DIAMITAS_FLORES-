@@ -40,4 +40,18 @@ public class MediaEntry
         this.review = ""; // makes sure that review is empty, not null
     }
 
+    // Constructor for Board Game entries
+    public MediaEntry(int entryId, String title, String genre, String status, Boardgame boardGameDetails) 
+    {
+        this.entryId = entryId;
+        this.title = title;
+        this.genre = genre;
+        this.status = status;
+        this.mediaType = "BoardGame";
+        this.boardGameDetails = boardGameDetails;
+        this.rating = -1; // -1 indicates unrated initially
+        this.review = ""; // makes sure that review is empty, not null
+    }
+    
+
 }
