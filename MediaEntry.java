@@ -26,4 +26,18 @@ public class MediaEntry
         this.rating = -1; // -1 indicates unrated initially
         this.review = ""; // makes sure that review is empty, not null
     }
+
+    // Constructor for Movie entries
+    public MediaEntry(int entryId, String title, String genre, String status, Movie movieDetails) 
+    {
+        this.entryId = entryId;
+        this.title = title;
+        this.genre = genre;
+        this.status = status;
+        this.mediaType = "Movie";
+        this.movieDetails = movieDetails;
+        this.rating = -1; // -1 indicates unrated initially
+        this.review = ""; // makes sure that review is empty, not null
+    }
+
 }
