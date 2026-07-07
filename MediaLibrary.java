@@ -73,7 +73,7 @@ public class MediaLibrary {
       MediaEntry entry = entries.get(i);
 
       if (entry.getMediaType().equalsIgnoreCase(mediaType)) {
-          filteredEntries.add(enry);
+          filteredEntries.add(entry);
       }
     }
 
