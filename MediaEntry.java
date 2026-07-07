@@ -47,7 +47,7 @@ public class MediaEntry
         this.title = title;
         this.genre = genre;
         this.status = status;
-        this.mediaType = "BoardGame";
+        this.mediaType = "Board Game";
         this.boardGameDetails = boardGameDetails;
         this.rating = -1; // -1 indicates unrated initially
         this.review = ""; // makes sure that review is empty, not null
@@ -110,7 +110,7 @@ public class MediaEntry
         if (status == null) 
             return false;
         String s = status.trim().toLowerCase();
-        return s.equals("plan to watch") || s.equals("watching") || s.equals("plan to play") || s.equals("playing") || s.equals("completed") || s.equals("dropped");
+        return s.equals("planned") || s.equals("in progress") || s.equals("completed");
     }
 
     // Updates the media status if the new status passes validation.
@@ -127,7 +127,7 @@ public class MediaEntry
     // Logic helper checking if an item is eligible for evaluation (e.g., not completely unplayed/unwatched).
     public boolean canBeRated() 
     {
-        return !this.status.equalsIgnoreCase("plan to watch") && !this.status.equalsIgnoreCase("plan to play");
+        return this.status.equalsIgnoreCase("Completed");
     }
 
     // Submits a standard score out of 10 and a corresponding written review text.
@@ -159,7 +159,7 @@ public class MediaEntry
         {
             return movieDetails.getDetails();
         } 
-        else if (mediaType.equals("BoardGame") && boardGameDetails != null) 
+        else if (mediaType.equals("Board Game") && boardGameDetails != null) 
         {
             return boardGameDetails.getDetails();
         }
