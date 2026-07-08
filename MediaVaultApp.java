@@ -162,24 +162,91 @@ public class MediaVaultApp {
       System.out.println("Board game entry added successfully.");
     }
 
-    private void updateEntryStatus() {
-      System.out.println("Update status feature is not yet available.");
+        private void updateEntryStatus() {
+      System.out.print("Enter entry ID: ");
+      int entryId = scanner.nextInt();
+      scanner.nextLine();
+
+      MediaEntry entry = user.getLibrary().getEntryById(entryId);
+
+      if (entry == null) {
+        System.out.println("Entry not found.");
+      } else {
+        System.out.print("Enter new status (Planned/In Progress/Completed): ");
+        String newStatus = scanner.nextLine();
+
+        if (entry.updateStatus(newStatus)) {
+          System.out.println("Status updated successfully.");
+        } else {
+          System.out.println("Invalid status.");
+        }
+      }
     }
 
     private void addRatingAndReview() {
-      System.out.println("Add rating and review feature is not yet available.");
+      System.out.print("Enter entry ID: ");
+      int entryId = scanner.nextInt();
+
+      System.out.print("Enter rating from 1 to 10: ");
+      int rating = scanner.nextInt();
+      scanner.nextLine();
+
+      System.out.print("Enter review: ");
+      String review = scanner.nextLine();
+
+      MediaEntry entry = user.getLibrary().getEntryById(entryId);
+
+      if (entry == null) {
+        System.out.println("Entry not found.");
+      } else {
+        if (entry.setRatingAndReview(rating, review)) {
+          System.out.println("Rating and review added successfully.");
+        } else {
+          System.out.println("Rating and review can only be added to completed entries.");
+        }
+      }
     }
 
     private void displayAllEntries() {
-      System.out.println("Display all entries feature is not yet available.");
+      ArrayList<MediaEntry> entries = user.getLibrary().getAllEntries();
+
+      if (entries.size() == 0) {
+        System.out.println("No entries in the library.");
+      } else {
+        for (int i = 0; i < entries.size(); i++) {
+          System.out.println(entries.get(i));
+        }
+      }
     }
 
     private void displayEntriesByStatus() {
-      System.out.println("Filter by status feature is not yet available.");
+      System.out.print("Enter status to filter (Planned/In Progress/Completed): ");
+      String status = scanner.nextLine();
+
+      ArrayList<MediaEntry> entries = user.getLibrary().filterByStatus(status);
+
+      if (entries.size() == 0) {
+        System.out.println("No entries found with that status.");
+      } else {
+        for (int i = 0; i < entries.size(); i++) {
+          System.out.println(entries.get(i));
+        }
+      }
     }
 
     private void displayEntriesByMediaType() {
-      System.out.println("Filter by media type feature is not yet available.");
+      System.out.print("Enter media type to filter (Anime/Movie/Board Game): ");
+      String mediaType = scanner.nextLine();
+
+      ArrayList<MediaEntry> entries = user.getLibrary().filterByMediaType(mediaType);
+
+      if (entries.size() == 0) {
+        System.out.println("No entries found with that media type.");
+      } else {
+        for (int i = 0; i < entries.size(); i++) {
+          System.out.println(entries.get(i));
+        }
+      }
     }
 
     private void displayLibrarySummary() {
