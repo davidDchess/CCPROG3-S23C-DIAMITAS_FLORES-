@@ -250,14 +250,41 @@ public class MediaVaultApp {
     }
 
     private void displayLibrarySummary() {
-      System.out.println("Library summary feature is not yet available.");
+      System.out.println("\n===== Library Summary =====");
+      System.out.println("Total entries: " + user.getLibrary().getTotalEntries());
+      System.out.println("Planned: " + user.getLibrary().countByStatus("Planned"));
+      System.out.println("In Progress: " + user.getLibrary().countByStatus("In Progress"));
+      System.out.println("Completed: " + user.getLibrary().countByStatus("Completed"));
+      System.out.println("Anime: " + user.getLibrary().countByMediaType("Anime"));
+      System.out.println("Movie: " + user.getLibrary().countByMediaType("Movie"));
+      System.out.println("Board Game: " + user.getLibrary().countByMediaType("Board Game"));
+      System.out.println("Average rating: " + user.getLibrary().getAverageRating());
     }
 
     private void removeEntry() {
-      System.out.println("Remove entry feature is not yet available.");
+      System.out.print("Enter entry ID to remove: ");
+      int entryId = scanner.nextInt();
+      scanner.nextLine();
+
+      if (user.getLibrary().removeEntry(entryId)) {
+        System.out.println("Entry removed successfully.");
+      } else {
+        System.out.println("Entry not found.");
+      }
     }
 
     private void searchEntryByTitle() {
-      System.out.println("Search by title feature is not yet available.");
+      System.out.print("Enter title keyword: ");
+      String keyword = scanner.nextLine();
+
+      ArrayList<MediaEntry> results = user.getLibrary().searchByTitle(keyword);
+
+      if (results.size() == 0) {
+        System.out.println("No entries found.");
+      } else {
+        System.out.println("Search results:");
+        for (int i = 0; i < results.size(); i++) {
+          System.out.println(results.get(i));
+        }
+      }
     }
-}
