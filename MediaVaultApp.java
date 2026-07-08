@@ -68,16 +68,98 @@ public class MediaVaultApp {
       }
     }
 
-    private void addAnime() {
-      System.out.println("Add anime feature is not yet available.");
+       private void addAnime() {
+      System.out.print("Enter title: ");
+      String title = scanner.nextLine();
+
+      System.out.print("Enter genre: ");
+      String genre = scanner.nextLine();
+
+      System.out.print("Enter status (Planned/In Progress): ");
+      String status = scanner.nextLine();
+
+      System.out.print("Enter total episodes: ");
+      int totalEpisodes = scanner.nextInt();
+
+      System.out.print("Enter current episode: ");
+      int currentEpisode = scanner.nextInt();
+
+      System.out.print("Enter season number: ");
+      int seasonNumber = scanner.nextInt();
+      scanner.nextLine();
+
+      System.out.print("Enter studio: ");
+      String studio = scanner.nextLine();
+
+      Anime anime = new Anime(totalEpisodes, currentEpisode, seasonNumber, studio);
+
+      int entryId = user.getLibrary().generateEntryId();
+      MediaEntry entry = new MediaEntry(entryId, title, genre, status, anime);
+
+      user.getLibrary().addEntry(entry);
+      System.out.println("Anime entry added successfully.");
     }
 
     private void addMovie() {
-      System.out.println("Add movie feature is not yet available.");
+      System.out.print("Enter title: ");
+      String title = scanner.nextLine();
+
+      System.out.print("Enter genre: ");
+      String genre = scanner.nextLine();
+
+      System.out.print("Enter status (Planned/In Progress): ");
+      String status = scanner.nextLine();
+
+      System.out.print("Enter duration in minutes: ");
+      int durationMinutes = scanner.nextInt();
+      scanner.nextLine();
+
+      System.out.print("Enter director: ");
+      String director = scanner.nextLine();
+
+      System.out.print("Enter release year: ");
+      int releaseYear = scanner.nextInt();
+      scanner.nextLine();
+
+      Movie movie = new Movie(durationMinutes, director, releaseYear);
+
+      int entryId = user.getLibrary().generateEntryId();
+      MediaEntry entry = new MediaEntry(entryId, title, genre, status, movie);
+
+      user.getLibrary().addEntry(entry);
+      System.out.println("Movie entry added successfully.");
     }
 
     private void addBoardGame() {
-      System.out.println("Add board game feature is not yet available.");
+      System.out.print("Enter title: ");
+      String title = scanner.nextLine();
+
+      System.out.print("Enter genre/category: ");
+      String genre = scanner.nextLine();
+
+      System.out.print("Enter status (Planned/In Progress): ");
+      String status = scanner.nextLine();
+
+      System.out.print("Enter minimum players: ");
+      int minPlayers = scanner.nextInt();
+
+      System.out.print("Enter maximum players: ");
+      int maxPlayers = scanner.nextInt();
+
+      System.out.print("Enter play time in minutes: ");
+      int playTimeMinutes = scanner.nextInt();
+      scanner.nextLine();
+
+      System.out.print("Enter difficulty level: ");
+      String difficultyLevel = scanner.nextLine();
+
+      BoardGame boardGame = new BoardGame(minPlayers, maxPlayers, playTimeMinutes, difficultyLevel);
+
+      int entryId = user.getLibrary().generateEntryId();
+      MediaEntry entry = new MediaEntry(entryId, title, genre, status, boardGame);
+
+      user.getLibrary().addEntry(entry);
+      System.out.println("Board game entry added successfully.");
     }
 
     private void updateEntryStatus() {
