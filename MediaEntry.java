@@ -1,7 +1,6 @@
 /**
- * Represents a generic media tracker entry that manages universal details like title,
- * genre, consumption status, ratings, and written reviews. This class acts as a container
- * that uses composition to hold specific subclass data formats.
+ * Represents a single item in your tracker, storing shared info like title and status.
+ * It also holds onto the unique, extra details required for Animes, Movies, or Board Games.
  *
  * @author DIAMITAS_FLORES
  */
@@ -28,7 +27,7 @@ public class MediaEntry
      * @param title        The title of the anime series.
      * @param genre        The main thematic genre of the content.
      * @param status       The user's consumption state (e.g., "Planned", "In Progress", "Completed").
-     * @param animeDetails The specific metadata object mapping to the configured anime metrics.
+     * @param animeDetails The specific details object containing anime-only information.
      */
     public MediaEntry(int entryId, String title, String genre, String status, Anime animeDetails) 
     {
@@ -49,7 +48,7 @@ public class MediaEntry
      * @param title The title of the movie production.
      * @param genre The main genre of the content.
      * @param status The user's consumption state (e.g., "Planned", "In Progress", "Completed").
-     * @param movieDetails The specific metadata object mapping to the configured movie metrics.
+     * @param movieDetails The specific details object containing movie-only information.
      */
     public MediaEntry(int entryId, String title, String genre, String status, Movie movieDetails) 
     {
@@ -70,7 +69,7 @@ public class MediaEntry
      * @param title The name of the board game.
      * @param genre The main thematic genre or category of the game.
      * @param status The user's play status state (e.g., "Planned", "In Progress", "Completed").
-     * @param boardGameDetails The specific metadata object mapping to the configured board game metrics.
+     * @param boardGameDetails The specific details object containing board game-only information.
      */
     public MediaEntry(int entryId, String title, String genre, String status, BoardGame boardGameDetails) 
     {
@@ -155,7 +154,7 @@ public class MediaEntry
     }
 
     /**
-     * Retrieves the nested explicit data bundle linked to an anime media profile.
+     * Retrieves the extra details object linked to an anime entry.
      *
      * @return The child {@link Anime} structure, or {@code null} if this is a different media layout.
      */
@@ -165,7 +164,7 @@ public class MediaEntry
     }
 
     /**
-     * Retrieves the nested explicit data bundle linked to a movie media profile.
+     * Retrieves the extra details object linked to a movie entry.
      *
      * @return The child {@link Movie} structure, or {@code null} if this is a different media layout.
      */
@@ -175,7 +174,7 @@ public class MediaEntry
     }
 
     /**
-     * Retrieves the nested explicit data bundle linked to a board game media profile.
+     * Retrieves the extra details object linked to a board game entry.
      *
      * @return The child {@link BoardGame} structure, or {@code null} if this is a different media layout.
      */
@@ -276,7 +275,7 @@ public class MediaEntry
     }
     
     /**
-     * Compiles standard overarching tracker property labels unified alongside localized subclass properties into a unified text read-out.
+     * Combines general tracker attributes and specific media category details into a single printable text block.
      *
      * @return A complete formatted data visualization summary block profile representing this container context.
      */
