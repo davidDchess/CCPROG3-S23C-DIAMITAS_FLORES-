@@ -33,7 +33,7 @@ public class MediaVaultApp {
         System.out.println("10. Remove Entry");
         System.out.println("11. Search by Title");
         System.out.println("0. Exit");
-        System.out.printIn("--------------------");
+        System.out.println("--------------------");
         System.out.print("Enter choice: ");
 
         if (scanner.hasNextInt()) {
@@ -41,7 +41,7 @@ public class MediaVaultApp {
           scanner.nextLine();
         } 
         else {
-          System.out.printIn("INVALID INPUT. Please enter a number.");
+          System.out.println("INVALID INPUT. Please enter a number.");
           scanner.nextLine();
           continue;
         }
