@@ -12,12 +12,12 @@ public class Anime
     private String studio;
 
     /**
-     * Constructs a new Anime instance with the specified progression details and studio.
+     * Creates a new Anime item with your current watching progress and studio information.
      *
-     * @param totalEpisodes  The total number of episodes in this season.
-     * @param currentEpisode The episode number the viewer is currently on.
-     * @param seasonNumber   The number of the specific season.
-     * @param studio         The animation studio producing the series.
+     * @param totalEpisodes  The total number of episodes available in this season.
+     * @param currentEpisode The specific episode number you are currently on.
+     * @param seasonNumber   The number of the season you are tracking.
+     * @param studio         The animation studio that made the show.
      */
     public Anime(int totalEpisodes, int currentEpisode, int seasonNumber, String studio) 
     {
@@ -28,7 +28,7 @@ public class Anime
     }
 
     /**
-     * Retrieves the total episodes available in this season.
+     * Gets the total number of episodes in this season.
      *
      * @return The total episode count.
      */
@@ -38,7 +38,7 @@ public class Anime
     }
 
     /**
-     * Retrieves the episode number currently being watched.
+     * Gets the episode number you are currently watching.
      *
      * @return The current episode number.
      */
@@ -47,8 +47,8 @@ public class Anime
         return currentEpisode;
     }
 
-    /**
-     * Retrieves the season number of this anime series.
+   /**
+     * Gets the season number of this anime.
      *
      * @return The season number.
      */
@@ -57,10 +57,10 @@ public class Anime
         return seasonNumber;
     }
 
-    /**
-     * Retrieves the name of the studio that produced the anime.
+  /**
+     * Gets the name of the studio that animated the series.
      *
-     * @return The studio name.
+     * @return The studio name text string.
      */
     public String getStudio() 
     {
