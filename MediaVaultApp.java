@@ -6,7 +6,7 @@
  * @author DIAMITAS_FLORES
  */
 import java.util.Scanner;
-import java.util.Arraylist;
+import java.util.ArrayList;
 
 public class MediaVaultApp {
   
