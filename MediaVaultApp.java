@@ -184,10 +184,17 @@ public class MediaVaultApp {
         System.out.print("Enter new status (Planned/In Progress/Completed): ");
         String newStatus = scanner.nextLine();
 
-        if (entry.updateStatus(newStatus)) {
-          System.out.println("Status updated successfully.");
-        } else {
+      if (entry.updateStatus(newStatus)) {
+        if (newStatus.equalsIgnoreCase("Completed") && entry.getAnimeDetails() != null) {
+          Anime anime = entry.getAnimeDetails();
+          anime.updateCurrentEpisode(anime.getTotalEpisodes());
+        }
+
+        System.out.println("Status updated successfully.");
+     } 
+          else {
           System.out.println("Invalid status.");
+
         }
       }
     }
