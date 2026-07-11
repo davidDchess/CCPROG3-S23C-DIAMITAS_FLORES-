@@ -20,6 +20,7 @@ public class MediaVaultApp {
       int choice = -1;
 
       while (choice != 0) {
+        printBlankLines();
         System.out.println("\n===== MediaVault =====");
         System.out.println("1. Add Anime");
         System.out.println("2. Add Movie");
@@ -294,6 +295,12 @@ public class MediaVaultApp {
         for (int i = 0; i < results.size(); i++) {
           System.out.println(results.get(i));
         }
+      }
+    }
+
+    private void printBlankLines() {
+      for (int i = 0; i < 6; i++) {
+        System.out.println();
       }
     }
 }
