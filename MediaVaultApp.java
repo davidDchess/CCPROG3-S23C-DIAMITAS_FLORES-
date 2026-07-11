@@ -33,10 +33,18 @@ public class MediaVaultApp {
         System.out.println("10. Remove Entry");
         System.out.println("11. Search by Title");
         System.out.println("0. Exit");
+        System.out.printIn("--------------------");
         System.out.print("Enter choice: ");
 
-        choice = scanner.nextInt();
-        scanner.nextLine();
+        if (scanner.hasNextInt()) {
+          choice = scanner.nextInt();
+          scanner.nextLine();
+        } 
+        else {
+          System.out.printIn("INVALID INPUT. Please enter a number.");
+          scanner.nextLine();
+          continue;
+        }
 
         if (choice == 1) {
           addAnime();
@@ -288,3 +296,4 @@ public class MediaVaultApp {
         }
       }
     }
+}
