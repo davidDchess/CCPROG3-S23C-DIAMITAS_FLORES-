@@ -1,13 +1,13 @@
-/**
- * Acts as the main application runner and console interface for MediaVault. 
- * It displays the user menu, reads keyboard entries, and coordinates all tasks 
- * like adding, removing, updating, and searching items in the library collection.
- *
- * @author DIAMITAS_FLORES
- */
 import java.util.Scanner;
 import java.util.ArrayList;
 
+
+/**
+ * The main application entry point for the Media Vault tracker system.
+ * This class runs the user interface and coordinates the media library profiles.
+ *
+ * @author DIAMITAS_FLORES
+ */
 public class MediaVaultApp {
   
     private Scanner scanner;
