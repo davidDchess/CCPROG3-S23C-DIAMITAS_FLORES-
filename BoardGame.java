@@ -1,5 +1,6 @@
 /**
- * Represents a Board Game, tracking player counts, average playtime, and difficulty level.
+ * Keeps track of specific details for a board game, including player counts, 
+ * estimated play time, and its difficulty level.
  *
  * @author DIAMITAS_FLORES
  */
@@ -12,12 +13,12 @@ public class BoardGame
     private String difficultyLevel;
 
     /**
-     * Constructs a new BoardGame instance with specified player constraints, duration, and difficulty.
+     * Creates a new BoardGame entry with player boundaries and gameplay settings.
      *
-     * @param minPlayers The minimum number of players required.
-     * @param maxPlayers The maximum number of players allowed.
-     * @param playTimeMinutes The average duration of a single game session in minutes.
-     * @param difficultyLevel The perceived complexity or difficulty level of the game.
+     * @param minPlayers      The minimum number of players required.
+     * @param maxPlayers      The maximum number of players allowed.
+     * @param playTimeMinutes The average time a single game session takes in minutes.
+     * @param difficultyLevel The perceived complexity or difficulty of the game.
      */
     public BoardGame(int minPlayers, int maxPlayers, int playTimeMinutes, String difficultyLevel) 
     {
@@ -28,7 +29,7 @@ public class BoardGame
     }
 
     /**
-     * Retrieves the minimum number of players required for the game.
+     * Gets the minimum number of players needed to play.
      *
      * @return The minimum player count.
      */
@@ -37,8 +38,8 @@ public class BoardGame
         return minPlayers;
     }
 
-    /**
-     * Retrieves the maximum number of players supported by the game.
+   /**
+     * Gets the maximum number of players that can join.
      *
      * @return The maximum player count.
      */
@@ -48,9 +49,9 @@ public class BoardGame
     }
 
     /**
-     * Retrieves the estimated play time for a full game session.
+     * Gets the average playtime duration in minutes.
      *
-     * @return The play time duration in minutes.
+     * @return The game duration in minutes.
      */
     public int getPlayTimeMinutes() 
     {
@@ -58,20 +59,20 @@ public class BoardGame
     }
 
     /**
-     * Retrieves the difficulty level classification of the board game.
+     * Gets the difficulty or complexity level rating of the board game.
      *
-     * @return The difficulty description string.
+     * @return The difficulty level description string.
      */
     public String getDifficultyLevel() 
     {
         return difficultyLevel;
     }
 
-    /**
-     * Checks if the game can be played with the given number of players.
+   /**
+     * Checks if the board game can be played with a specific number of people.
      *
-     * @param playerCount The number of players attempting to join the game.
-     * @return {@code true} if the player count falls between the minimum and maximum boundaries; {@code false} otherwise.
+     * @param playerCount The number of players wanting to play.
+     * @return {@code true} if the count falls within the min and max limits; {@code false} otherwise.
      */
     public boolean isPlayableWith(int playerCount) 
     {
@@ -79,9 +80,9 @@ public class BoardGame
     }
 
     /**
-     * Returns a formatted string of the specific board game details.
+     * Creates a text summary detailing player counts, playtime, and difficulty.
      *
-     * @return A formatted summary string outlining player ranges, runtime, and difficulty metrics.
+     * @return A formatted text string containing the board game metrics.
      */
     public String getDetails() 
     {
