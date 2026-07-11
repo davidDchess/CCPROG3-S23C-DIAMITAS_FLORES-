@@ -1,6 +1,5 @@
 /**
- * Represents a Movie production, tracking runtime duration, directing credits,
- * and theatrical release timelines.
+ * Represents a Movie production, tracking runtime duration, directing credits and theatrical release timelines.
  *
  * @author DIAMITAS_FLORES
  */
