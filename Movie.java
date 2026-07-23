@@ -3,7 +3,7 @@
  *
  * @author DIAMITAS_FLORES
  */
-public class Movie 
+public class Movie extends MediaEntry
 {
     // Attributes
     private int durationMinutes;
@@ -17,8 +17,9 @@ public class Movie
      * @param director        The name of the movie director.
      * @param releaseYear     The calendar year the movie was officially released.
      */
-    public Movie(int durationMinutes, String director, int releaseYear) 
+    public Movie(int entryId, String title, String genre, String status, int durationMinutes, String director, int releaseYear) 
     {
+        super(entryId, title, genre, status);
         this.durationMinutes = durationMinutes;
         this.director = director;
         this.releaseYear = releaseYear;
@@ -65,13 +66,22 @@ public class Movie
                 " | Duration: " + durationMinutes + " mins";
     }
 
-    /**
-     * Replaces the default toString method to print clean details.
-     *
-     * @return The detailed textual summary provided by the {@link #getDetails()} method.
-     */
-    public String toString() 
+    @Override
+    public String getMediaType()
+    {
+        return "Movie";
+    }
+
+    @Override
+    public String getSpecificDetails()
     {
         return getDetails();
+    }
+
+    @Override
+    public String toFileString()
+    {
+        return "Movie|" + getEntryId() + "|" + getTitle() + "|" + getGenre() + "|" + getStatus() + "|" +
+               durationMinutes + "|" + director + "|" + releaseYear + "|" + getRating() + "|" + getReview();
     }
 }
