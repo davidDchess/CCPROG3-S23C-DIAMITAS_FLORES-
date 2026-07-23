@@ -4,7 +4,7 @@
  *
  * @author DIAMITAS_FLORES
  */
-public class MediaEntry 
+public abstract class MediaEntry 
 {
     // Attributes
     private int entryId;
@@ -13,12 +13,8 @@ public class MediaEntry
     private String status;
     private int rating;
     private String review;
-    private String mediaType;
     
-    // Composition attributes for specific media types
-    private Anime animeDetails;
-    private Movie movieDetails;
-    private BoardGame boardGameDetails;
+    
 
     /**
      * Constructs a new MediaEntry specifically tracking an {@link Anime} series.
@@ -27,61 +23,17 @@ public class MediaEntry
      * @param title        The title of the anime series.
      * @param genre        The main thematic genre of the content.
      * @param status       The user's consumption state (e.g., "Planned", "In Progress", "Completed").
-     * @param animeDetails The specific details object containing anime-only information.
      */
-    public MediaEntry(int entryId, String title, String genre, String status, Anime animeDetails) 
+    public MediaEntry(int entryId, String title, String genre, String status) 
     {
         this.entryId = entryId;
         this.title = title;
         this.genre = genre;
         this.status = status;
-        this.mediaType = "Anime";
-        this.animeDetails = animeDetails;
         this.rating = -1; // -1 indicates unrated initially
         this.review = ""; // makes sure that review is empty, not null
     }
 
-    /**
-     * Constructs a new MediaEntry specifically tracking a {@link Movie}.
-     *
-     * @param entryId The unique tracking identifier for this entry.
-     * @param title The title of the movie production.
-     * @param genre The main genre of the content.
-     * @param status The user's consumption state (e.g., "Planned", "In Progress", "Completed").
-     * @param movieDetails The specific details object containing movie-only information.
-     */
-    public MediaEntry(int entryId, String title, String genre, String status, Movie movieDetails) 
-    {
-        this.entryId = entryId;
-        this.title = title;
-        this.genre = genre;
-        this.status = status;
-        this.mediaType = "Movie";
-        this.movieDetails = movieDetails;
-        this.rating = -1; // -1 indicates unrated initially
-        this.review = ""; // makes sure that review is empty, not null
-    }
-
-    /**
-     * Constructs a new MediaEntry specifically tracking a {@link BoardGame}.
-     *
-     * @param entryId The unique tracking identifier for this entry.
-     * @param title The name of the board game.
-     * @param genre The main thematic genre or category of the game.
-     * @param status The user's play status state (e.g., "Planned", "In Progress", "Completed").
-     * @param boardGameDetails The specific details object containing board game-only information.
-     */
-    public MediaEntry(int entryId, String title, String genre, String status, BoardGame boardGameDetails) 
-    {
-        this.entryId = entryId;
-        this.title = title;
-        this.genre = genre;
-        this.status = status;
-        this.mediaType = "Board Game";
-        this.boardGameDetails = boardGameDetails;
-        this.rating = -1; // -1 indicates unrated initially
-        this.review = ""; // makes sure that review is empty, not null
-    }
 
     /**
      * Retrieves the unique identifier linked to this tracking entry.
@@ -143,45 +95,7 @@ public class MediaEntry
         return review;
     }
 
-    /**
-     * Retrieves the general structural type tag of the media wrapper.
-     *
-     * @return The specific string classification of the media layout.
-     */
-    public String getMediaType() 
-    {
-        return mediaType;
-    }
-
-    /**
-     * Retrieves the extra details object linked to an anime entry.
-     *
-     * @return The child {@link Anime} structure, or {@code null} if this is a different media layout.
-     */
-    public Anime getAnimeDetails() 
-    {
-        return animeDetails;
-    }
-
-    /**
-     * Retrieves the extra details object linked to a movie entry.
-     *
-     * @return The child {@link Movie} structure, or {@code null} if this is a different media layout.
-     */
-    public Movie getMovieDetails() 
-    {
-        return movieDetails;
-    }
-
-    /**
-     * Retrieves the extra details object linked to a board game entry.
-     *
-     * @return The child {@link BoardGame} structure, or {@code null} if this is a different media layout.
-     */
-    public BoardGame getBoardGameDetails() 
-    {
-        return boardGameDetails;
-    }
+  
 
     /**
      * Validates if the given status string matches allowed vocabulary parameters within the tracker application.
@@ -236,9 +150,19 @@ public class MediaEntry
         if (canBeRated() && rating >= 1 && rating <= 10) 
         {
             this.rating = rating;
-            this.review = review;
+            
+            if (review == null) {
+
+                this.review = "";
+            }
+            else
+            {
+                this.review = review;
+            }
+
             return true;
         }
+
         return false;
     }
 
@@ -252,27 +176,26 @@ public class MediaEntry
         return this.rating != -1;
     }
 
-    /**
-     * Resolves and extracts textual tracking context variables depending directly on the active structural wrapper layout mode.
-     *
-     * @return A consolidated custom string signature corresponding to sub-profile details, or an error fallback string.
+    /** 
+     * Returns the media type of the entry.
+     * 
+     * @return the media type.
      */
-    public String getSpecificDetails() 
-    {
-        if (mediaType.equals("Anime") && animeDetails != null) 
-        {
-            return animeDetails.getDetails();
-        } 
-        else if (mediaType.equals("Movie") && movieDetails != null) 
-        {
-            return movieDetails.getDetails();
-        } 
-        else if (mediaType.equals("Board Game") && boardGameDetails != null) 
-        {
-            return boardGameDetails.getDetails();
-        }
-        return "No specific details available.";
-    }
+    public abstract String getMediaType();
+
+      /** 
+     * Returns the media type of the entry.
+     * 
+     * @return the media type.
+     */
+    public abstract String getSpecificDetails();
+
+      /** 
+     * Returns the media type of the entry.
+     * 
+     * @return the media type.
+     */
+    public abstract String toFileString();
     
     /**
      * Combines general tracker attributes and specific media category details into a single printable text block.
@@ -281,7 +204,8 @@ public class MediaEntry
      */
     public String toString() 
     {
-        String base = "[" + mediaType + "] ID: " + entryId + " | Title: " + title + " | Genre: " + genre + " | Status: " + status;
+        String base = "[" + getMediaType() + "] ID: " + entryId + " | Title: " + title + " | Genre: " + genre + " | Status: " + status;
+       
         if (hasRating()) 
         {
             base += " | Rating: " + rating + "/10 | Review: \"" + review + "\"";
@@ -293,3 +217,4 @@ public class MediaEntry
         return base + "\n    -> " + getSpecificDetails();
     }
 }
+       
