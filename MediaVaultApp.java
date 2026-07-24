@@ -1,45 +1,46 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 
-
 /**
- * The main application entry point for the Media Vault tracker system.
- * This class runs the user interface and coordinates the media library profiles.
+ * The main application entry point for the MediaVault tracker system.
+ * This class runs the console menu and coordinates the media library.
  *
  * @author DIAMITAS_FLORES
  */
-public class MediaVaultApp {
-  
+public class MediaVaultApp
+{
     private Scanner scanner;
     private UserProfile user;
 
     /**
-     * Creates a new MediaVaultApp application instance by setting up the text scanner 
-     * and initializing a default user profile.
+     * Creates a new MediaVaultApp application instance.
      */
-    public MediaVaultApp() {
+    public MediaVaultApp()
+    {
         scanner = new Scanner(System.in);
         user = new UserProfile("User");
     }
 
     /**
-     * The main entry point of the program that starts up the application.
+     * Starts the program.
      *
-     * @param args Standard command-line arguments array.
+     * @param args Standard command-line arguments.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         MediaVaultApp app = new MediaVaultApp();
         app.showMainMenu();
     }
 
     /**
-     * Displays the main menu choices in a continuous loop and routes the user's number 
-     * selection to the correct management action.
+     * Displays the main menu and handles user choices.
      */
-    private void showMainMenu() {
+    private void showMainMenu()
+    {
         int choice = -1;
 
-        while (choice != 0) {
+        while (choice != 0)
+        {
             printBlankLines();
             System.out.println("\n===== MediaVault =====");
             System.out.println("1. Add Anime");
@@ -57,51 +58,78 @@ public class MediaVaultApp {
             System.out.println("--------------------");
             System.out.print("Enter choice: ");
 
-            if (scanner.hasNextInt()) {
+            if (scanner.hasNextInt())
+            {
                 choice = scanner.nextInt();
                 scanner.nextLine();
-            } 
-            else {
+            }
+            else
+            {
                 System.out.println("INVALID INPUT. Please enter a number.");
                 scanner.nextLine();
                 continue;
             }
 
-            if (choice == 1) {
+            if (choice == 1)
+            {
                 addAnime();
-            } else if (choice == 2) {
+            }
+            else if (choice == 2)
+            {
                 addMovie();
-            } else if (choice == 3) {
+            }
+            else if (choice == 3)
+            {
                 addBoardGame();
-            } else if (choice == 4) {
+            }
+            else if (choice == 4)
+            {
                 updateEntryStatus();
-            } else if (choice == 5) {
+            }
+            else if (choice == 5)
+            {
                 addRatingAndReview();
-            } else if (choice == 6) {
+            }
+            else if (choice == 6)
+            {
                 displayAllEntries();
-            } else if (choice == 7) {
+            }
+            else if (choice == 7)
+            {
                 displayEntriesByStatus();
-            } else if (choice == 8) {
+            }
+            else if (choice == 8)
+            {
                 displayEntriesByMediaType();
-            } else if (choice == 9) {
+            }
+            else if (choice == 9)
+            {
                 displayLibrarySummary();
-            } else if (choice == 10) {
+            }
+            else if (choice == 10)
+            {
                 removeEntry();
-            } else if (choice == 11) {
+            }
+            else if (choice == 11)
+            {
                 searchEntryByTitle();
-            } else if (choice == 0) {
+            }
+            else if (choice == 0)
+            {
                 System.out.println("Thank you for using MediaVault.");
-            } else {
+            }
+            else
+            {
                 System.out.println("Invalid choice. Please try again.");
             }
         }
     }
 
     /**
-     * Prompts the user to enter text and number details for an anime series, 
-     * packs it into an entry, and adds it to the collection.
+     * Adds an anime entry to the library.
      */
-    private void addAnime() {
+    private void addAnime()
+    {
         System.out.print("Enter title: ");
         String title = scanner.nextLine();
 
@@ -124,20 +152,20 @@ public class MediaVaultApp {
         System.out.print("Enter studio: ");
         String studio = scanner.nextLine();
 
-        Anime anime = new Anime(totalEpisodes, currentEpisode, seasonNumber, studio);
-
         int entryId = user.getLibrary().generateEntryId();
-        MediaEntry entry = new MediaEntry(entryId, title, genre, status, anime);
+
+        MediaEntry entry = new Anime(entryId, title, genre, status,
+                                     totalEpisodes, currentEpisode, seasonNumber, studio);
 
         user.getLibrary().addEntry(entry);
         System.out.println("Anime entry added successfully.");
     }
 
     /**
-     * Prompts the user to enter text and number details for a movie production, 
-     * packs it into an entry, and adds it to the collection.
+     * Adds a movie entry to the library.
      */
-    private void addMovie() {
+    private void addMovie()
+    {
         System.out.print("Enter title: ");
         String title = scanner.nextLine();
 
@@ -158,20 +186,20 @@ public class MediaVaultApp {
         int releaseYear = scanner.nextInt();
         scanner.nextLine();
 
-        Movie movie = new Movie(durationMinutes, director, releaseYear);
-
         int entryId = user.getLibrary().generateEntryId();
-        MediaEntry entry = new MediaEntry(entryId, title, genre, status, movie);
+
+        MediaEntry entry = new Movie(entryId, title, genre, status,
+                                     durationMinutes, director, releaseYear);
 
         user.getLibrary().addEntry(entry);
         System.out.println("Movie entry added successfully.");
     }
 
     /**
-     * Prompts the user to enter details for a board game profile, packs it 
-     * into a unified tracking entry, and registers it into the collection.
+     * Adds a board game entry to the library.
      */
-    private void addBoardGame() {
+    private void addBoardGame()
+    {
         System.out.print("Enter title: ");
         String title = scanner.nextLine();
 
@@ -194,50 +222,57 @@ public class MediaVaultApp {
         System.out.print("Enter difficulty level: ");
         String difficultyLevel = scanner.nextLine();
 
-        BoardGame boardGame = new BoardGame(minPlayers, maxPlayers, playTimeMinutes, difficultyLevel);
-
         int entryId = user.getLibrary().generateEntryId();
-        MediaEntry entry = new MediaEntry(entryId, title, genre, status, boardGame);
+
+        MediaEntry entry = new BoardGame(entryId, title, genre, status,
+                                         minPlayers, maxPlayers, playTimeMinutes, difficultyLevel);
 
         user.getLibrary().addEntry(entry);
         System.out.println("Board game entry added successfully.");
     }
 
     /**
-     * Looks up an existing item by its unique ID number and changes its current tracking status. 
-     * If an anime is marked as completed, it automatically sets its watch progress to the final episode.
+     * Updates the status of an entry.
      */
-    private void updateEntryStatus() {
+    private void updateEntryStatus()
+    {
         System.out.print("Enter entry ID: ");
         int entryId = scanner.nextInt();
         scanner.nextLine();
 
         MediaEntry entry = user.getLibrary().getEntryById(entryId);
 
-        if (entry == null) {
+        if (entry == null)
+        {
             System.out.println("Entry not found.");
-        } else {
+        }
+        else
+        {
             System.out.print("Enter new status (Planned/In Progress/Completed): ");
             String newStatus = scanner.nextLine();
 
-            if (entry.updateStatus(newStatus)) {
-                if (newStatus.equalsIgnoreCase("Completed") && entry.getAnimeDetails() != null) {
-                    Anime anime = entry.getAnimeDetails();
+            if (entry.updateStatus(newStatus))
+            {
+                if (newStatus.equalsIgnoreCase("Completed") && entry instanceof Anime)
+                {
+                    Anime anime = (Anime) entry;
                     anime.updateCurrentEpisode(anime.getTotalEpisodes());
                 }
+
                 System.out.println("Status updated successfully.");
-            } 
-            else {
+            }
+            else
+            {
                 System.out.println("Invalid status.");
             }
         }
     }
 
     /**
-     * Finds a media entry using its ID code and saves a numerical score evaluation 
-     * and text review comments, provided the item has already been finished.
+     * Adds a rating and review to a completed entry.
      */
-    private void addRatingAndReview() {
+    private void addRatingAndReview()
+    {
         System.out.print("Enter entry ID: ");
         int entryId = scanner.nextInt();
 
@@ -250,76 +285,94 @@ public class MediaVaultApp {
 
         MediaEntry entry = user.getLibrary().getEntryById(entryId);
 
-        if (entry == null) {
+        if (entry == null)
+        {
             System.out.println("Entry not found.");
-        } else {
-            if (entry.setRatingAndReview(rating, review)) {
+        }
+        else
+        {
+            if (entry.setRatingAndReview(rating, review))
+            {
                 System.out.println("Rating and review added successfully.");
-            } else {
+            }
+            else
+            {
                 System.out.println("Rating and review can only be added to completed entries.");
             }
         }
     }
 
     /**
-     * Grabs every single entry saved inside the tracker registry database and prints out 
-     * their structured text details to the screen.
+     * Displays all entries in the library.
      */
-    private void displayAllEntries() {
+    private void displayAllEntries()
+    {
         ArrayList<MediaEntry> entries = user.getLibrary().getAllEntries();
 
-        if (entries.size() == 0) {
+        if (entries.size() == 0)
+        {
             System.out.println("No entries in the library.");
-        } else {
-            for (int i = 0; i < entries.size(); i++) {
+        }
+        else
+        {
+            for (int i = 0; i < entries.size(); i++)
+            {
                 System.out.println(entries.get(i));
             }
         }
     }
 
     /**
-     * Asks the user for a filter status string and displays only the media entries 
-     * that match that specific completion criteria.
+     * Displays entries that match a given status.
      */
-    private void displayEntriesByStatus() {
+    private void displayEntriesByStatus()
+    {
         System.out.print("Enter status to filter (Planned/In Progress/Completed): ");
         String status = scanner.nextLine();
 
         ArrayList<MediaEntry> entries = user.getLibrary().filterByStatus(status);
 
-        if (entries.size() == 0) {
+        if (entries.size() == 0)
+        {
             System.out.println("No entries found with that status.");
-        } else {
-            for (int i = 0; i < entries.size(); i++) {
+        }
+        else
+        {
+            for (int i = 0; i < entries.size(); i++)
+            {
                 System.out.println(entries.get(i));
             }
         }
     }
 
     /**
-     * Asks the user for a media category string and prints out only the items that match 
-     * that type classification (like Anime, Movie, or Board Game).
+     * Displays entries that match a given media type.
      */
-    private void displayEntriesByMediaType() {
+    private void displayEntriesByMediaType()
+    {
         System.out.print("Enter media type to filter (Anime/Movie/Board Game): ");
         String mediaType = scanner.nextLine();
 
         ArrayList<MediaEntry> entries = user.getLibrary().filterByMediaType(mediaType);
 
-        if (entries.size() == 0) {
+        if (entries.size() == 0)
+        {
             System.out.println("No entries found with that media type.");
-        } else {
-            for (int i = 0; i < entries.size(); i++) {
+        }
+        else
+        {
+            for (int i = 0; i < entries.size(); i++)
+            {
                 System.out.println(entries.get(i));
             }
         }
     }
 
     /**
-     * Generates and prints a summary layout dashboard showing overall statistics, 
-     * including category amounts, progress distributions, and the calculated library rating average.
+     * Displays a summary of the library.
      */
-    private void displayLibrarySummary() {
+    private void displayLibrarySummary()
+    {
         System.out.println("\n===== Library Summary =====");
         System.out.println("Total entries: " + user.getLibrary().getTotalEntries());
         System.out.println("Planned: " + user.getLibrary().countByStatus("Planned"));
@@ -332,47 +385,55 @@ public class MediaVaultApp {
     }
 
     /**
-     * Prompts for an index number code and wipes that specific tracking profile 
-     * completely out of the active data registry storage list.
+     * Removes an entry from the library.
      */
-    private void removeEntry() {
+    private void removeEntry()
+    {
         System.out.print("Enter entry ID to remove: ");
         int entryId = scanner.nextInt();
         scanner.nextLine();
 
-        if (user.getLibrary().removeEntry(entryId)) {
+        if (user.getLibrary().removeEntry(entryId))
+        {
             System.out.println("Entry removed successfully.");
-        } else {
+        }
+        else
+        {
             System.out.println("Entry not found.");
         }
     }
 
     /**
-     * Prompts the user for a word or phrase keyword and displays all media logs whose 
-     * titles contain that text sequence (case-insensitive).
+     * Searches for entries by title.
      */
-    private void searchEntryByTitle() {
+    private void searchEntryByTitle()
+    {
         System.out.print("Enter title keyword: ");
         String keyword = scanner.nextLine();
 
         ArrayList<MediaEntry> results = user.getLibrary().searchByTitle(keyword);
 
-        if (results.size() == 0) {
+        if (results.size() == 0)
+        {
             System.out.println("No entries found.");
-        } else {
+        }
+        else
+        {
             System.out.println("Search results:");
-            for (int i = 0; i < results.size(); i++) {
+            for (int i = 0; i < results.size(); i++)
+            {
                 System.out.println(results.get(i));
             }
         }
     }
 
     /**
-     * Outputs several empty lines to clear out space on the console terminal window 
-     * and make the menu cleaner to look at.
+     * Prints blank lines to make the menu easier to read.
      */
-    private void printBlankLines() {
-        for (int i = 0; i < 6; i++) {
+    private void printBlankLines()
+    {
+        for (int i = 0; i < 6; i++)
+        {
             System.out.println();
         }
     }
