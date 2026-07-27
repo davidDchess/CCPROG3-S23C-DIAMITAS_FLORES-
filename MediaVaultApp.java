@@ -457,6 +457,27 @@ public class MediaVaultApp
     }
 
     /**
+ * Loads a media library from a file.
+ */
+    private void loadLibraryFromFile()
+    {
+        System.out.print("Enter file name to load: ");
+        String fileName = scanner.nextLine();
+
+        MediaLibrary loadedLibrary = fileManager.loadLibrary(fileName);
+
+        if (loadedLibrary != null)
+        {
+            user.setLibrary(loadedLibrary);
+            System.out.println("Library loaded successfully.");
+        }
+        else
+        {
+            System.out.println("Library was not loaded.");
+        }
+    }
+
+    /**
      * Prints blank lines to make the menu easier to read.
      */
     private void printBlankLines()
