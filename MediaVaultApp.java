@@ -11,6 +11,7 @@ public class MediaVaultApp
 {
     private Scanner scanner;
     private UserProfile user;
+    private MediaFileManager fileManager;
 
     /**
      * Creates a new MediaVaultApp application instance.
@@ -19,6 +20,7 @@ public class MediaVaultApp
     {
         scanner = new Scanner(System.in);
         user = new UserProfile("User");
+        fileManager = new MediaFileManager();
     }
 
     /**
@@ -54,6 +56,8 @@ public class MediaVaultApp
             System.out.println("9. Display Library Summary");
             System.out.println("10. Remove Entry");
             System.out.println("11. Search by Title");
+            System.out.println("12. Save Library");
+            System.out.println("13. Load Library");
             System.out.println("0. Exit");
             System.out.println("--------------------");
             System.out.print("Enter choice: ");
@@ -113,6 +117,14 @@ public class MediaVaultApp
             else if (choice == 11)
             {
                 searchEntryByTitle();
+            }
+            else if (choice == 12)
+            {
+               saveLibraryToFile();
+            }
+            else if (choice == 13)
+            {
+               loadLibraryFromFile();
             }
             else if (choice == 0)
             {
@@ -424,6 +436,23 @@ public class MediaVaultApp
             {
                 System.out.println(results.get(i));
             }
+        }
+    }
+
+    private void saveLibraryToFile()
+    {
+        System.out.print("Enter file name to save: ");
+        String fileName = scanner.nextLine();
+
+        boolean savedFile = fileManager.saveLibrary(user.getLibrary(), fileName);
+
+        if(savedFile)
+        {
+            System.out.println("Library saved successfully. ");
+        }
+        else 
+        {
+            System.out.println("Library was not saved. ");
         }
     }
 
