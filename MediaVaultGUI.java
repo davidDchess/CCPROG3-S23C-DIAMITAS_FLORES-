@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * The graphical user interface for the MediaVault tracker system.
- * This class shows the main window and basic buttons for the media library
+ * This class shows the main window and basic buttons for the media library.
  *
  * @author DIAMITAS_FLORES
  */
@@ -22,6 +22,13 @@ public class MediaVaultGUI extends JFrame
     private JButton addMovieButton;
     private JButton addBoardGameButton;
     private JButton displayButton;
+    private JButton searchButton;
+    private JButton filterStatusButton;
+    private JButton filterTypeButton;
+    private JButton summaryButton;
+    private JButton updateStatusButton;
+    private JButton ratingButton;
+    private JButton removeButton;
     private JButton saveButton;
     private JButton loadButton;
     private JButton clearButton;
@@ -39,7 +46,7 @@ public class MediaVaultGUI extends JFrame
 
 
     /**
-     * creates the MediaVault GUI window.
+     *  reates the MediaVault GUI window.
      */
     public MediaVaultGUI()
     {
@@ -54,7 +61,7 @@ public class MediaVaultGUI extends JFrame
         fileManager = new MediaFileManager();
 
         setTitle("MediaVault - " + user.getUsername());
-        setSize(1000, 650);
+        setSize(1050, 680);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -71,15 +78,22 @@ public class MediaVaultGUI extends JFrame
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(BACKGROUND_COLOR);
 
-        JPanel sidebarPanel = new JPanel(new GridLayout(9, 1, 0, 10));
+        JPanel sidebarPanel = new JPanel(new GridLayout(14, 1, 0, 8));
         sidebarPanel.setBackground(SIDEBAR_COLOR);
-        sidebarPanel.setBorder(BorderFactory.createEmptyBorder(35, 15, 180, 15));
-        sidebarPanel.setPreferredSize(new Dimension(230, 650));
+        sidebarPanel.setBorder(BorderFactory.createEmptyBorder(25, 15, 25, 15));
+        sidebarPanel.setPreferredSize(new Dimension(245, 680));
 
         addAnimeButton = new RoundedButton("ADD ANIME", SECONDARY_COLOR);
         addMovieButton = new RoundedButton("ADD MOVIE", SECONDARY_COLOR);
         addBoardGameButton = new RoundedButton("ADD BOARD GAME", SECONDARY_COLOR);
         displayButton = new RoundedButton("DISPLAY ALL", SECONDARY_COLOR);
+        searchButton = new RoundedButton("SEARCH TITLE", SECONDARY_COLOR);
+        filterStatusButton = new RoundedButton("FILTER STATUS", SECONDARY_COLOR);
+        filterTypeButton = new RoundedButton("FILTER TYPE", SECONDARY_COLOR);
+        summaryButton = new RoundedButton("SUMMARY", SECONDARY_COLOR);
+        updateStatusButton = new RoundedButton("UPDATE STATUS", SECONDARY_COLOR);
+        ratingButton = new RoundedButton("RATING / REVIEW", SECONDARY_COLOR);
+        removeButton = new RoundedButton("REMOVE ENTRY", DANGER_COLOR);
         saveButton = new RoundedButton("SAVE LIBRARY", MAIN_COLOR);
         loadButton = new RoundedButton("LOAD LIBRARY", SECONDARY_COLOR);
         clearButton = new RoundedButton("CLEAR DISPLAY", DANGER_COLOR);
@@ -88,6 +102,13 @@ public class MediaVaultGUI extends JFrame
         sidebarPanel.add(addMovieButton);
         sidebarPanel.add(addBoardGameButton);
         sidebarPanel.add(displayButton);
+        sidebarPanel.add(searchButton);
+        sidebarPanel.add(filterStatusButton);
+        sidebarPanel.add(filterTypeButton);
+        sidebarPanel.add(summaryButton);
+        sidebarPanel.add(updateStatusButton);
+        sidebarPanel.add(ratingButton);
+        sidebarPanel.add(removeButton);
         sidebarPanel.add(saveButton);
         sidebarPanel.add(loadButton);
         sidebarPanel.add(clearButton);
@@ -103,8 +124,7 @@ public class MediaVaultGUI extends JFrame
         titleLabel.setForeground(TEXT_COLOR);
 
         JLabel subtitleLabel = new JLabel("Welcome, " + user.getUsername()
-                + "! Track your anime, movies, and board games.");
-
+                + "! Manage your anime, movies, and board games in one place.");
         subtitleLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
         subtitleLabel.setForeground(SUBTEXT_COLOR);
 
@@ -165,6 +185,62 @@ public class MediaVaultGUI extends JFrame
             }
         });
 
+        searchButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                searchEntryByTitle();
+            }
+        });
+
+        filterStatusButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                displayEntriesByStatus();
+            }
+        });
+
+        filterTypeButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                displayEntriesByMediaType();
+            }
+        });
+
+        summaryButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                displayLibrarySummary();
+            }
+        });
+
+        updateStatusButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                updateEntryStatus();
+            }
+        });
+
+        ratingButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                addRatingAndReview();
+            }
+        });
+
+        removeButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                removeEntry();
+            }
+        });
+
         saveButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -189,7 +265,6 @@ public class MediaVaultGUI extends JFrame
             }
         });
     }
-
 
     /**
      * shows the welcome screen in the main content panel
@@ -227,7 +302,6 @@ public class MediaVaultGUI extends JFrame
         contentPanel.revalidate();
         contentPanel.repaint();
     }
-
 
     /**
      * adds an anime entry using input boxes
@@ -279,7 +353,7 @@ public class MediaVaultGUI extends JFrame
         int entryId = user.getLibrary().generateEntryId();
 
         MediaEntry entry = new Anime(entryId, title, genre, status,
-                totalEpisodes, currentEpisode, seasonNumber, studio);
+                                     totalEpisodes, currentEpisode, seasonNumber, studio);
 
         user.getLibrary().addEntry(entry);
 
@@ -290,7 +364,6 @@ public class MediaVaultGUI extends JFrame
     /**
      * adds a movie entry using input boxes.
      */
-
     private void addMovie()
     {
         String title = askTextInput("Enter movie title:");
@@ -332,7 +405,7 @@ public class MediaVaultGUI extends JFrame
         int entryId = user.getLibrary().generateEntryId();
 
         MediaEntry entry = new Movie(entryId, title, genre, status,
-                durationMinutes, director, releaseYear);
+                                     durationMinutes, director, releaseYear);
 
         user.getLibrary().addEntry(entry);
 
@@ -390,7 +463,7 @@ public class MediaVaultGUI extends JFrame
         int entryId = user.getLibrary().generateEntryId();
 
         MediaEntry entry = new BoardGame(entryId, title, genre, status,
-                minPlayers, maxPlayers, playTimeMinutes, difficultyLevel);
+                                         minPlayers, maxPlayers, playTimeMinutes, difficultyLevel);
 
         user.getLibrary().addEntry(entry);
 
@@ -398,52 +471,245 @@ public class MediaVaultGUI extends JFrame
         displayAllEntries();
     }
 
+
     /**
-     * displays all media entries in the content area
+     * Updates the status of an entry.
+     */
+    private void updateEntryStatus()
+    {
+        int entryId = askIntInput("Enter entry ID:");
+        if (entryId == -1)
+        {
+            return;
+        }
+
+        MediaEntry entry = user.getLibrary().getEntryById(entryId);
+
+        if (entry == null)
+        {
+            JOptionPane.showMessageDialog(this, "Entry not found.");
+        }
+        else
+        {
+            String newStatus = askTextInput("Enter new status (Planned/In Progress/Completed):");
+
+            if (newStatus == null)
+            {
+                return;
+            }
+
+            if (entry.updateStatus(newStatus))
+            {
+                if (newStatus.equalsIgnoreCase("Completed") && entry instanceof Anime)
+                {
+                    Anime anime = (Anime) entry;
+                    anime.updateCurrentEpisode(anime.getTotalEpisodes());
+                }
+
+                JOptionPane.showMessageDialog(this, "Status updated successfully.");
+                displayAllEntries();
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this, "Invalid status.");
+            }
+        }
+    }
+
+
+    /**
+     * Adds a rating and review to a completed entry.
+     */
+
+    private void addRatingAndReview()
+    {
+        int entryId = askIntInput("Enter entry ID:");
+        if (entryId == -1)
+        {
+            return;
+        }
+
+        MediaEntry entry = user.getLibrary().getEntryById(entryId);
+
+        if (entry == null)
+        {
+            JOptionPane.showMessageDialog(this, "Entry not found.");
+            return;
+        }
+
+        int rating = askIntInput("Enter rating from 1 to 10:");
+        if (rating == -1)
+        {
+            return;
+        }
+
+        String review = askTextInput("Enter review:");
+        if (review == null)
+        {
+            return;
+        }
+
+        if (entry.setRatingAndReview(rating, review))
+        {
+            JOptionPane.showMessageDialog(this, "Rating and review added successfully.");
+            displayAllEntries();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Rating and review can only be added to completed entries.");
+        }
+    }
+
+
+    /**
+     * Displays all media entries in the content area.
      */
 
     private void displayAllEntries()
     {
         ArrayList<MediaEntry> entries = user.getLibrary().getAllEntries();
 
-        displayArea = new JTextArea();
-        displayArea.setEditable(false);
-        displayArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
-        displayArea.setForeground(TEXT_COLOR);
-        displayArea.setBackground(CARD_COLOR);
-        displayArea.setMargin(new Insets(15, 15, 15, 15));
-        displayArea.setLineWrap(true);
-        displayArea.setWrapStyleWord(true);
-
-
         if (entries.size() == 0)
         {
-            displayArea.setText("No entries in the library.");
+            showTextOutput("No entries in the library.");
         }
         else
         {
-            String output = "===== All Media Entries =====\n\n";
-
-            for (int i = 0; i < entries.size(); i++)
-            {
-                output += entries.get(i).toString() + "\n\n";
-            }
-
-            displayArea.setText(output);
+            showEntryList("===== All Media Entries =====", entries);
         }
-
-        JScrollPane scrollPane = new JScrollPane(displayArea);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.getViewport().setBackground(CARD_COLOR);
-
-        contentPanel.removeAll();
-        contentPanel.add(scrollPane, BorderLayout.CENTER);
-        contentPanel.revalidate();
-        contentPanel.repaint();
     }
 
+
     /**
-     * saves the current media library to a file
+     * Displays entries that match a status.
+     */
+
+    private void displayEntriesByStatus()
+    {
+        String status = askTextInput("Enter status to filter (Planned/In Progress/Completed):");
+
+        if (status == null)
+        {
+            return;
+        }
+
+        ArrayList<MediaEntry> entries = user.getLibrary().filterByStatus(status);
+
+        if (entries.size() == 0)
+        {
+            showTextOutput("No entries found with that status.");
+        }
+        else
+        {
+            showEntryList("===== Entries with Status: " + status + " =====", entries);
+        }
+    }
+
+
+    /**
+     * Displays entries that match a media type.
+     */
+
+    private void displayEntriesByMediaType()
+    {
+        String mediaType = askTextInput("Enter media type to filter (Anime/Movie/Board Game):");
+
+        if (mediaType == null)
+        {
+            return;
+        }
+
+        ArrayList<MediaEntry> entries = user.getLibrary().filterByMediaType(mediaType);
+
+        if (entries.size() == 0)
+        {
+            showTextOutput("No entries found with that media type.");
+        }
+        else
+        {
+            showEntryList("===== Entries with Type: " + mediaType + " =====", entries);
+        }
+    }
+
+
+    /**
+     * Displays a summary of the library.
+     */
+
+    private void displayLibrarySummary()
+    {
+        String output = "===== Library Summary =====\n\n";
+
+        output += "Total entries: " + user.getLibrary().getTotalEntries() + "\n";
+        output += "Planned: " + user.getLibrary().countByStatus("Planned") + "\n";
+        output += "In Progress: " + user.getLibrary().countByStatus("In Progress") + "\n";
+        output += "Completed: " + user.getLibrary().countByStatus("Completed") + "\n\n";
+
+        output += "Anime: " + user.getLibrary().countByMediaType("Anime") + "\n";
+        output += "Movie: " + user.getLibrary().countByMediaType("Movie") + "\n";
+        output += "Board Game: " + user.getLibrary().countByMediaType("Board Game") + "\n\n";
+
+        output += "Average rating: " + user.getLibrary().getAverageRating();
+
+        showTextOutput(output);
+    }
+
+
+    /**
+     * Removes an entry from the library.
+     */
+
+    private void removeEntry()
+    {
+        int entryId = askIntInput("Enter entry ID to remove:");
+
+        if (entryId == -1)
+        {
+            return;
+        }
+
+        boolean removed = user.getLibrary().removeEntry(entryId);
+
+        if (removed)
+        {
+            JOptionPane.showMessageDialog(this, "Entry removed successfully.");
+            displayAllEntries();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Entry not found.");
+        }
+    }
+
+
+    /**
+     * Searches for entries by title.
+     */
+
+    private void searchEntryByTitle()
+    {
+        String keyword = askTextInput("Enter title keyword:");
+
+        if (keyword == null)
+        {
+            return;
+        }
+
+        ArrayList<MediaEntry> results = user.getLibrary().searchByTitle(keyword);
+
+        if (results.size() == 0)
+        {
+            showTextOutput("No entries found.");
+        }
+        else
+        {
+            showEntryList("===== Search Results =====", results);
+        }
+    }
+
+
+    /**
+     * Saves the current media library to a file.
      */
 
     private void saveLibraryToFile()
@@ -469,8 +735,9 @@ public class MediaVaultGUI extends JFrame
         }
     }
 
+
     /**
-     * loads a media library from a file.
+     * Loads media library from a file.
      */
 
     private void loadLibraryFromFile()
@@ -498,8 +765,56 @@ public class MediaVaultGUI extends JFrame
         }
     }
 
+
     /**
-     * asks the user for a text input.
+     * Displays a list of media entries in the content panel.
+     *
+     * @param heading The heading text to show.
+     * @param entries The list of entries to display.
+     */
+    private void showEntryList(String heading, ArrayList<MediaEntry> entries)
+    {
+        String output = heading + "\n\n";
+
+        for (int i = 0; i < entries.size(); i++)
+        {
+            output += entries.get(i).toString() + "\n\n";
+        }
+
+        showTextOutput(output);
+    }
+
+
+    /**
+     * Displays text output in the main content panel.
+     *
+     * @param output The text to display.
+     */
+    private void showTextOutput(String output)
+    {
+        displayArea = new JTextArea();
+        displayArea.setEditable(false);
+        displayArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        displayArea.setForeground(TEXT_COLOR);
+        displayArea.setBackground(CARD_COLOR);
+        displayArea.setMargin(new Insets(15, 15, 15, 15));
+        displayArea.setLineWrap(true);
+        displayArea.setWrapStyleWord(true);
+        displayArea.setText(output);
+
+        JScrollPane scrollPane = new JScrollPane(displayArea);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBackground(CARD_COLOR);
+
+        contentPanel.removeAll();
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }
+
+
+    /**
+     * Asks the user for a text input.
      *
      * @param message The message shown in the input dialog.
      * @return The input text, or null if cancelled.
@@ -516,8 +831,9 @@ public class MediaVaultGUI extends JFrame
         return input;
     }
 
+
     /**
-     * asks the user for a number input.
+     * Asks the user for a number input.
      *
      * @param message The message shown in the input dialog.
      * @return The integer input, or -1 if cancelled.
@@ -545,8 +861,9 @@ public class MediaVaultGUI extends JFrame
         return Integer.parseInt(input);
     }
 
+
     /**
-     * checks if a string can be converted to a number.
+     * Checks if a string can be converted to a number.
      *
      * @param text The text to check.
      * @return true if the text is a number, false otherwise.
@@ -564,8 +881,9 @@ public class MediaVaultGUI extends JFrame
         }
     }
 
+
     /**
-     * starts the GUI program.
+     * Starts the GUI program.
      *
      * @param args Standard command-line arguments.
      */
@@ -575,8 +893,9 @@ public class MediaVaultGUI extends JFrame
         gui.setVisible(true);
     }
 
+
     /**
-     * A simple rounded panel used for the main content.
+     * A simple rounded panel used for the main content card.
      */
     private class RoundedPanel extends JPanel
     {
@@ -592,24 +911,26 @@ public class MediaVaultGUI extends JFrame
         }
 
         /**
-         * paints the rounded panel background.
+         * Paints the rounded panel background.
          *
          * @param g The graphics object.
          */
         protected void paintComponent(Graphics g)
         {
+            super.paintComponent(g);
+
             Graphics2D g2 = (Graphics2D) g.create();
 
             g2.setColor(getBackground());
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 25, 25);
 
             g2.dispose();
-            super.paintComponent(g);
         }
     }
 
+
     /**
-     * A simple rounded button used for the GUI design.
+     * A simple rounded button used for the GUI.
      */
     private class RoundedButton extends JButton
     {
@@ -634,6 +955,7 @@ public class MediaVaultGUI extends JFrame
             setOpaque(false);
             setCursor(new Cursor(Cursor.HAND_CURSOR));
         }
+
 
         /**
          * Paints the rounded button shape.
