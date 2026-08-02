@@ -148,8 +148,14 @@ public class MediaVaultApp
         System.out.print("Enter genre: ");
         String genre = scanner.nextLine();
 
-        System.out.print("Enter status (Planned/In Progress): ");
+        System.out.print("Enter status (Planned/In Progress/Completed): ");
         String status = scanner.nextLine();
+
+        if (!isValidStatus(status))
+        {
+            System.out.println("Invalid status. Entry was not added.");
+            return;
+        }
 
         System.out.print("Enter total episodes: ");
         int totalEpisodes = scanner.nextInt();
@@ -161,21 +167,32 @@ public class MediaVaultApp
         int seasonNumber = scanner.nextInt();
         scanner.nextLine();
 
+        if (!isValidAnimeEpisodes(totalEpisodes, currentEpisode))
+        {
+            System.out.println("Invalid episode count. Entry was not added.");
+            return;
+        }
+
+        if (!isPositiveNumber(seasonNumber))
+        {
+            System.out.println("Invalid season number. Entry was not added.");
+            return;
+        }
+
         System.out.print("Enter studio: ");
         String studio = scanner.nextLine();
 
         int entryId = user.getLibrary().generateEntryId();
 
-        MediaEntry entry = new Anime(entryId, title, genre, status,
-                                     totalEpisodes, currentEpisode, seasonNumber, studio);
+        MediaEntry entry = new Anime(entryId, title, genre, status, totalEpisodes, currentEpisode, seasonNumber, studio);
 
         user.getLibrary().addEntry(entry);
         System.out.println("Anime entry added successfully.");
     }
 
     /**
-     * Adds a movie entry to the library.
-     */
+    * Adds a movie entry to the library.
+    */
     private void addMovie()
     {
         System.out.print("Enter title: ");
@@ -184,12 +201,24 @@ public class MediaVaultApp
         System.out.print("Enter genre: ");
         String genre = scanner.nextLine();
 
-        System.out.print("Enter status (Planned/In Progress): ");
+        System.out.print("Enter status (Planned/In Progress/Completed): ");
         String status = scanner.nextLine();
+
+        if (!isValidStatus(status))
+        {
+            System.out.println("Invalid status. Entry was not added.");
+            return;
+        }
 
         System.out.print("Enter duration in minutes: ");
         int durationMinutes = scanner.nextInt();
         scanner.nextLine();
+
+        if (!isPositiveNumber(durationMinutes))
+        {
+            System.out.println("Invalid duration. Entry was not added.");
+            return;
+        }
 
         System.out.print("Enter director: ");
         String director = scanner.nextLine();
@@ -198,10 +227,15 @@ public class MediaVaultApp
         int releaseYear = scanner.nextInt();
         scanner.nextLine();
 
+        if (!isPositiveNumber(releaseYear))
+        {
+            System.out.println("Invalid release year. Entry was not added.");
+            return;
+        }
+
         int entryId = user.getLibrary().generateEntryId();
 
-        MediaEntry entry = new Movie(entryId, title, genre, status,
-                                     durationMinutes, director, releaseYear);
+        MediaEntry entry = new Movie(entryId, title, genre, status, durationMinutes, director, releaseYear);
 
         user.getLibrary().addEntry(entry);
         System.out.println("Movie entry added successfully.");
@@ -218,8 +252,14 @@ public class MediaVaultApp
         System.out.print("Enter genre/category: ");
         String genre = scanner.nextLine();
 
-        System.out.print("Enter status (Planned/In Progress): ");
+        System.out.print("Enter status (Planned/In Progress/Completed): ");
         String status = scanner.nextLine();
+
+        if (!isValidStatus(status))
+        {
+            System.out.println("Invalid status. Entry was not added.");
+            return;
+        }
 
         System.out.print("Enter minimum players: ");
         int minPlayers = scanner.nextInt();
@@ -231,13 +271,24 @@ public class MediaVaultApp
         int playTimeMinutes = scanner.nextInt();
         scanner.nextLine();
 
+        if (!isValidBoardGamePlayers(minPlayers, maxPlayers))
+        {
+            System.out.println("Invalid player count. Entry was not added.");
+            return;
+        }
+
+        if (!isPositiveNumber(playTimeMinutes))
+        {
+            System.out.println("Invalid play time. Entry was not added.");
+            return;
+        }
+
         System.out.print("Enter difficulty level: ");
         String difficultyLevel = scanner.nextLine();
 
         int entryId = user.getLibrary().generateEntryId();
 
-        MediaEntry entry = new BoardGame(entryId, title, genre, status,
-                                         minPlayers, maxPlayers, playTimeMinutes, difficultyLevel);
+        MediaEntry entry = new BoardGame(entryId, title, genre, status, minPlayers, maxPlayers, playTimeMinutes, difficultyLevel);
 
         user.getLibrary().addEntry(entry);
         System.out.println("Board game entry added successfully.");
@@ -248,6 +299,12 @@ public class MediaVaultApp
      */
     private void updateEntryStatus()
     {
+        if (!hasEntries())
+        {
+            return;
+        }
+
+
         System.out.print("Enter entry ID: ");
         int entryId = scanner.nextInt();
         scanner.nextLine();
@@ -285,12 +342,24 @@ public class MediaVaultApp
      */
     private void addRatingAndReview()
     {
+        if (!hasEntries())
+        {
+            return;
+        }
+
+
         System.out.print("Enter entry ID: ");
         int entryId = scanner.nextInt();
 
         System.out.print("Enter rating from 1 to 10: ");
         int rating = scanner.nextInt();
         scanner.nextLine();
+
+        if (rating < 1 || rating > 10)
+        {
+            System.out.println("Rating must be from 1 to 10.");
+            return;
+        }
 
         System.out.print("Enter review: ");
         String review = scanner.nextLine();
@@ -339,6 +408,12 @@ public class MediaVaultApp
      */
     private void displayEntriesByStatus()
     {
+        if (!hasEntries())
+        {
+            return;
+        }
+
+        
         System.out.print("Enter status to filter (Planned/In Progress/Completed): ");
         String status = scanner.nextLine();
 
@@ -362,6 +437,12 @@ public class MediaVaultApp
      */
     private void displayEntriesByMediaType()
     {
+        if (!hasEntries())
+        {
+            return;
+        }
+
+        
         System.out.print("Enter media type to filter (Anime/Movie/Board Game): ");
         String mediaType = scanner.nextLine();
 
@@ -401,6 +482,12 @@ public class MediaVaultApp
      */
     private void removeEntry()
     {
+        if (!hasEntries())
+        {
+            return;
+        }
+
+
         System.out.print("Enter entry ID to remove: ");
         int entryId = scanner.nextInt();
         scanner.nextLine();
@@ -420,6 +507,12 @@ public class MediaVaultApp
      */
     private void searchEntryByTitle()
     {
+        if (!hasEntries())
+        {
+            return;
+        }
+
+
         System.out.print("Enter title keyword: ");
         String keyword = scanner.nextLine();
 
@@ -439,30 +532,47 @@ public class MediaVaultApp
         }
     }
 
+
+    /**
+     * Saves the current media library to a file.
+     */
     private void saveLibraryToFile()
     {
         System.out.print("Enter file name to save: ");
         String fileName = scanner.nextLine();
 
+        if (fileName.trim().equals(""))
+        {
+            System.out.println("Invalid file name.");
+            return;
+        }
+
         boolean savedFile = fileManager.saveLibrary(user.getLibrary(), fileName);
 
-        if(savedFile)
+        if (savedFile)
         {
-            System.out.println("Library saved successfully. ");
+            System.out.println("Library saved successfully.");
         }
-        else 
+        else
         {
-            System.out.println("Library was not saved. ");
+            System.out.println("Library was not saved.");
         }
     }
 
+
     /**
- * Loads a media library from a file.
- */
+     * Loads a media library from a file.
+     */
     private void loadLibraryFromFile()
     {
         System.out.print("Enter file name to load: ");
         String fileName = scanner.nextLine();
+
+        if (fileName.trim().equals(""))
+        {
+            System.out.println("Invalid file name.");
+            return;
+        }
 
         MediaLibrary loadedLibrary = fileManager.loadLibrary(fileName);
 
@@ -475,6 +585,69 @@ public class MediaVaultApp
         {
             System.out.println("Library was not loaded.");
         }
+    }
+
+
+    /**
+    * Checks if a status is valid.
+    *
+    * @param status The status to check.
+    * @return true if the status is valid, false otherwise.
+    */
+    private boolean isValidStatus(String status)
+    {
+        return status.equalsIgnoreCase("Planned") || status.equalsIgnoreCase("In Progress") || status.equalsIgnoreCase("Completed");
+    }
+
+    /**
+     * Checks if a number is greater than zero.
+     *
+     * @param number The number to check.
+     * @return true if the number is greater than zero, false otherwise.
+     */
+    private boolean isPositiveNumber(int number)
+    {
+        return number > 0;
+    }
+
+    /**
+     * Checks if the anime episode values are valid.
+     *
+     * @param totalEpisodes The total number of episodes.
+     * @param currentEpisode The current episode progress.
+     * @return true if the episode values are valid, false otherwise.
+     */
+    private boolean isValidAnimeEpisodes(int totalEpisodes, int currentEpisode)
+    {
+        return totalEpisodes > 0 && currentEpisode >= 0 && currentEpisode <= totalEpisodes;
+    }
+
+    /**
+     * Checks if the board game player values are valid.
+     *
+     * @param minPlayers The minimum number of players.
+     * @param maxPlayers The maximum number of players.
+     * @return true if the player values are valid, false otherwise.
+     */
+    private boolean isValidBoardGamePlayers(int minPlayers, int maxPlayers)
+    {
+        return minPlayers > 0 && maxPlayers > 0 && minPlayers <= maxPlayers;
+    }
+
+    /**
+     * Checks if the library has at least one entry.
+     *
+     * @return true if the library has entries, false otherwise.
+     */
+    private boolean hasEntries()
+    {
+        if (user.getLibrary().getTotalEntries() == 0)
+        {
+            System.out.println("No entries in the library.");
+            return false;
+        }
+
+        return true;
     }
 
     /**
