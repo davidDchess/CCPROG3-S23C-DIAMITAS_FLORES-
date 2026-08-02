@@ -303,8 +303,9 @@ public class MediaVaultGUI extends JFrame
         contentPanel.repaint();
     }
 
+
     /**
-     * adds an anime entry using input boxes
+     * Adds an anime entry using input dialog boxes.
      */
     private void addAnime()
     {
@@ -320,9 +321,15 @@ public class MediaVaultGUI extends JFrame
             return;
         }
 
-        String status = askTextInput("Enter status (Planned/In Progress):");
+        String status = askTextInput("Enter status (Planned/In Progress/Completed):");
         if (status == null)
         {
+            return;
+        }
+
+        if (!isValidStatus(status))
+        {
+            JOptionPane.showMessageDialog(this, "Invalid status. Entry was not added.");
             return;
         }
 
@@ -344,6 +351,18 @@ public class MediaVaultGUI extends JFrame
             return;
         }
 
+        if (!isValidAnimeEpisodes(totalEpisodes, currentEpisode))
+        {
+            JOptionPane.showMessageDialog(this, "Invalid episode count. Entry was not added.");
+            return;
+        }
+
+        if (!isPositiveNumber(seasonNumber))
+        {
+            JOptionPane.showMessageDialog(this, "Invalid season number. Entry was not added.");
+            return;
+        }
+
         String studio = askTextInput("Enter studio:");
         if (studio == null)
         {
@@ -352,8 +371,7 @@ public class MediaVaultGUI extends JFrame
 
         int entryId = user.getLibrary().generateEntryId();
 
-        MediaEntry entry = new Anime(entryId, title, genre, status,
-                                     totalEpisodes, currentEpisode, seasonNumber, studio);
+        MediaEntry entry = new Anime(entryId, title, genre, status, totalEpisodes, currentEpisode, seasonNumber, studio);
 
         user.getLibrary().addEntry(entry);
 
@@ -361,8 +379,9 @@ public class MediaVaultGUI extends JFrame
         displayAllEntries();
     }
 
+   
     /**
-     * adds a movie entry using input boxes.
+     * Adds a movie entry using input dialog boxes.
      */
     private void addMovie()
     {
@@ -378,15 +397,27 @@ public class MediaVaultGUI extends JFrame
             return;
         }
 
-        String status = askTextInput("Enter status (Planned/In Progress):");
+        String status = askTextInput("Enter status (Planned/In Progress/Completed):");
         if (status == null)
         {
+            return;
+        }
+
+        if (!isValidStatus(status))
+        {
+            JOptionPane.showMessageDialog(this, "Invalid status. Entry was not added.");
             return;
         }
 
         int durationMinutes = askIntInput("Enter duration in minutes:");
         if (durationMinutes == -1)
         {
+            return;
+        }
+
+        if (!isPositiveNumber(durationMinutes))
+        {
+            JOptionPane.showMessageDialog(this, "Invalid duration. Entry was not added.");
             return;
         }
 
@@ -402,10 +433,15 @@ public class MediaVaultGUI extends JFrame
             return;
         }
 
+        if (!isPositiveNumber(releaseYear))
+        {
+            JOptionPane.showMessageDialog(this, "Invalid release year. Entry was not added.");
+            return;
+        }
+
         int entryId = user.getLibrary().generateEntryId();
 
-        MediaEntry entry = new Movie(entryId, title, genre, status,
-                                     durationMinutes, director, releaseYear);
+        MediaEntry entry = new Movie(entryId, title, genre, status, durationMinutes, director, releaseYear);
 
         user.getLibrary().addEntry(entry);
 
@@ -413,8 +449,9 @@ public class MediaVaultGUI extends JFrame
         displayAllEntries();
     }
 
+
     /**
-     * adds a board game entry using input boxes.
+     * Adds a board game entry using input dialog boxes.
      */
     private void addBoardGame()
     {
@@ -430,9 +467,15 @@ public class MediaVaultGUI extends JFrame
             return;
         }
 
-        String status = askTextInput("Enter status (Planned/In Progress):");
+        String status = askTextInput("Enter status (Planned/In Progress/Completed):");
         if (status == null)
         {
+            return;
+        }
+
+        if (!isValidStatus(status))
+        {
+            JOptionPane.showMessageDialog(this, "Invalid status. Entry was not added.");
             return;
         }
 
@@ -454,6 +497,18 @@ public class MediaVaultGUI extends JFrame
             return;
         }
 
+        if (!isValidBoardGamePlayers(minPlayers, maxPlayers))
+        {
+            JOptionPane.showMessageDialog(this, "Invalid player count. Entry was not added.");
+            return;
+        }
+
+        if (!isPositiveNumber(playTimeMinutes))
+        {
+            JOptionPane.showMessageDialog(this, "Invalid play time. Entry was not added.");
+            return;
+        }
+
         String difficultyLevel = askTextInput("Enter difficulty level:");
         if (difficultyLevel == null)
         {
@@ -462,21 +517,24 @@ public class MediaVaultGUI extends JFrame
 
         int entryId = user.getLibrary().generateEntryId();
 
-        MediaEntry entry = new BoardGame(entryId, title, genre, status,
-                                         minPlayers, maxPlayers, playTimeMinutes, difficultyLevel);
+        MediaEntry entry = new BoardGame(entryId, title, genre, status, minPlayers, maxPlayers, playTimeMinutes, difficultyLevel);
 
         user.getLibrary().addEntry(entry);
 
         JOptionPane.showMessageDialog(this, "Board game entry added successfully.");
         displayAllEntries();
     }
-
-
     /**
      * Updates the status of an entry.
      */
     private void updateEntryStatus()
     {
+        if (!hasEntries())
+        {
+            return;
+        }
+
+
         int entryId = askIntInput("Enter entry ID:");
         if (entryId == -1)
         {
@@ -523,6 +581,12 @@ public class MediaVaultGUI extends JFrame
 
     private void addRatingAndReview()
     {
+        if (!hasEntries())
+        {
+            return;
+        }
+
+        
         int entryId = askIntInput("Enter entry ID:");
         if (entryId == -1)
         {
@@ -540,6 +604,12 @@ public class MediaVaultGUI extends JFrame
         int rating = askIntInput("Enter rating from 1 to 10:");
         if (rating == -1)
         {
+            return;
+        }
+
+        if (rating < 1 || rating > 10)
+        {
+            JOptionPane.showMessageDialog(this, "Rating must be from 1 to 10.");
             return;
         }
 
@@ -586,6 +656,12 @@ public class MediaVaultGUI extends JFrame
 
     private void displayEntriesByStatus()
     {
+        if (!hasEntries())
+        {
+            return;
+        }
+
+        
         String status = askTextInput("Enter status to filter (Planned/In Progress/Completed):");
 
         if (status == null)
@@ -612,6 +688,12 @@ public class MediaVaultGUI extends JFrame
 
     private void displayEntriesByMediaType()
     {
+        if (!hasEntries())
+        {
+            return;
+        }
+
+        
         String mediaType = askTextInput("Enter media type to filter (Anime/Movie/Board Game):");
 
         if (mediaType == null)
@@ -661,6 +743,12 @@ public class MediaVaultGUI extends JFrame
 
     private void removeEntry()
     {
+        if (!hasEntries())
+        {
+            return;
+        }
+
+        
         int entryId = askIntInput("Enter entry ID to remove:");
 
         if (entryId == -1)
@@ -688,6 +776,12 @@ public class MediaVaultGUI extends JFrame
 
     private void searchEntryByTitle()
     {
+        if (!hasEntries())
+        {
+            return;
+        }
+
+        
         String keyword = askTextInput("Enter title keyword:");
 
         if (keyword == null)
@@ -711,57 +805,53 @@ public class MediaVaultGUI extends JFrame
     /**
      * Saves the current media library to a file.
      */
-
     private void saveLibraryToFile()
     {
         String fileName = JOptionPane.showInputDialog(this, "Enter file name to save:");
 
         if (fileName == null || fileName.trim().equals(""))
         {
-            JOptionPane.showMessageDialog(this, "Save cancelled.");
+            JOptionPane.showMessageDialog(this, "Invalid file name.");
+            return;
+        }
+
+        boolean savedFile = fileManager.saveLibrary(user.getLibrary(), fileName);
+
+        if (savedFile)
+        {
+            JOptionPane.showMessageDialog(this, "Library saved successfully.");
         }
         else
         {
-            boolean savedFile = fileManager.saveLibrary(user.getLibrary(), fileName);
-
-            if (savedFile)
-            {
-                JOptionPane.showMessageDialog(this, "Library saved successfully.");
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(this, "Library was not saved.");
-            }
+            JOptionPane.showMessageDialog(this, "Library was not saved.");
         }
     }
 
 
     /**
-     * Loads media library from a file.
+     * Loads a media library from a file.
      */
-
     private void loadLibraryFromFile()
     {
         String fileName = JOptionPane.showInputDialog(this, "Enter file name to load:");
 
         if (fileName == null || fileName.trim().equals(""))
         {
-            JOptionPane.showMessageDialog(this, "Load cancelled.");
+            JOptionPane.showMessageDialog(this, "Invalid file name.");
+            return;
+        }
+
+        MediaLibrary loadedLibrary = fileManager.loadLibrary(fileName);
+
+        if (loadedLibrary != null)
+        {
+            user.setLibrary(loadedLibrary);
+            JOptionPane.showMessageDialog(this, "Library loaded successfully.");
+            displayAllEntries();
         }
         else
         {
-            MediaLibrary loadedLibrary = fileManager.loadLibrary(fileName);
-
-            if (loadedLibrary != null)
-            {
-                user.setLibrary(loadedLibrary);
-                JOptionPane.showMessageDialog(this, "Library loaded successfully.");
-                displayAllEntries();
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(this, "Library was not loaded.");
-            }
+            JOptionPane.showMessageDialog(this, "Library was not loaded.");
         }
     }
 
@@ -859,6 +949,71 @@ public class MediaVaultGUI extends JFrame
         }
 
         return Integer.parseInt(input);
+    }
+
+    /**
+     * Checks if a status is valid.
+     *
+     * @param status The status to check.
+     * @return true if the status is valid, false otherwise.
+     */
+    private boolean isValidStatus(String status)
+    {
+        return status.equalsIgnoreCase("Planned") || status.equalsIgnoreCase("In Progress") || status.equalsIgnoreCase("Completed");
+    }
+
+
+    /**
+     * Checks if a number is greater than zero.
+     *
+     * @param number The number to check.
+     * @return true if the number is greater than zero, false otherwise.
+     */
+    private boolean isPositiveNumber(int number)
+    {
+        return number > 0;
+    }
+
+
+    /**
+     * Checks if the anime episode values are valid.
+     *
+     * @param totalEpisodes The total number of episodes.
+     * @param currentEpisode The current episode progress.
+     * @return true if the episode values are valid, false otherwise.
+     */
+    private boolean isValidAnimeEpisodes(int totalEpisodes, int currentEpisode)
+    {
+        return totalEpisodes > 0 && currentEpisode >= 0 && currentEpisode <= totalEpisodes;
+    }
+
+
+    /**
+     * Checks if the board game player values are valid.
+     *
+     * @param minPlayers The minimum number of players.
+     * @param maxPlayers The maximum number of players.
+     * @return true if the player values are valid, false otherwise.
+     */
+    private boolean isValidBoardGamePlayers(int minPlayers, int maxPlayers)
+    {
+        return minPlayers > 0 && maxPlayers > 0 && minPlayers <= maxPlayers;
+    }
+
+    /**
+     * Checks if the library has at least one entry.
+     *
+     * @return true if the library has entries, false otherwise.
+     */
+    private boolean hasEntries()
+    {
+        if (user.getLibrary().getTotalEntries() == 0)
+        {
+            JOptionPane.showMessageDialog(this, "No entries in the library.");
+            return false;
+        }
+
+        return true;
     }
 
 
