@@ -1,11 +1,12 @@
 /**
- * Represents a single item in your tracker, storing shared info like title and status.
- * It also holds onto the unique, extra details required for Animes, Movies, or Board Games.
+ * Represents a single item in your tracker, storing shared info like title and
+ * status.
+ * It also holds onto the unique, extra details required for Animes, Movies, or
+ * Board Games.
  *
  * @author DIAMITAS_FLORES
  */
-public abstract class MediaEntry 
-{
+public abstract class MediaEntry {
     // Attributes
     private int entryId;
     private String title;
@@ -13,19 +14,17 @@ public abstract class MediaEntry
     private String status;
     private int rating;
     private String review;
-    
-    
 
     /**
-     * Constructs a new MediaEntry specifically tracking an {@link Anime} series.
+     * Constructs a new MediaEntry instance with common media tracking properties.
      *
-     * @param entryId      The unique tracking identifier for this entry.
-     * @param title        The title of the anime series.
-     * @param genre        The main thematic genre of the content.
-     * @param status       The user's consumption state (e.g., "Planned", "In Progress", "Completed").
+     * @param entryId The unique tracking identifier for this entry.
+     * @param title   The title of the media item.
+     * @param genre   The main thematic genre of the content.
+     * @param status  The user's consumption state (e.g., "Planned", "In Progress",
+     *                "Completed").
      */
-    public MediaEntry(int entryId, String title, String genre, String status) 
-    {
+    public MediaEntry(int entryId, String title, String genre, String status) {
         this.entryId = entryId;
         this.title = title;
         this.genre = genre;
@@ -34,14 +33,12 @@ public abstract class MediaEntry
         this.review = ""; // makes sure that review is empty, not null
     }
 
-
     /**
      * Retrieves the unique identifier linked to this tracking entry.
      *
      * @return The unique integer entry ID.
      */
-    public int getEntryId() 
-    {
+    public int getEntryId() {
         return entryId;
     }
 
@@ -50,8 +47,7 @@ public abstract class MediaEntry
      *
      * @return The media title text.
      */
-    public String getTitle() 
-    {
+    public String getTitle() {
         return title;
     }
 
@@ -60,8 +56,7 @@ public abstract class MediaEntry
      *
      * @return The text string of the genre tag.
      */
-    public String getGenre() 
-    {
+    public String getGenre() {
         return genre;
     }
 
@@ -70,8 +65,7 @@ public abstract class MediaEntry
      *
      * @return The current progression status value.
      */
-    public String getStatus() 
-    {
+    public String getStatus() {
         return status;
     }
 
@@ -80,8 +74,7 @@ public abstract class MediaEntry
      *
      * @return The evaluation index value, where -1 indicates unrated status.
      */
-    public int getRating() 
-    {
+    public int getRating() {
         return rating;
     }
 
@@ -90,38 +83,36 @@ public abstract class MediaEntry
      *
      * @return The block text describing the user summary review.
      */
-    public String getReview() 
-    {
+    public String getReview() {
         return review;
     }
 
-  
-
     /**
-     * Validates if the given status string matches allowed vocabulary parameters within the tracker application.
-     * Allowed status variants include "planned", "in progress", and "completed".
+     * Validates whether the provided status string is a recognized progression
+     * state.
+     * Allowed status terms include "planned", "in progress", and "completed".
      *
-     * @param status The target testing string input representing progression tracking.
-     * @return {@code true} if the input text matches valid, supported status strings after formatting checks; {@code false} otherwise.
+     * @param status The target testing string input representing progression
+     *               tracking.
+     * @return {@code true} if the input text matches valid, supported status
+     *         strings after formatting checks; {@code false} otherwise.
      */
-    public boolean isValidStatus(String status) 
-    {
-        if (status == null) 
+    public boolean isValidStatus(String status) {
+        if (status == null)
             return false;
         String s = status.trim().toLowerCase();
         return s.equals("planned") || s.equals("in progress") || s.equals("completed");
     }
 
     /**
-     * Updates the active tracking profile progression descriptor if the prospective text input passes validation checks.
+     * Updates the current status of this media entry if the new status is valid.
      *
      * @param newStatus The proposed entry status label string.
-     * @return {@code true} if the target label passed checking validations and successfully changed properties; {@code false} otherwise.
+     * @return {@code true} if the status was successfully updated; {@code false} if
+     *         the new status was invalid.
      */
-    public boolean updateStatus(String newStatus) 
-    {
-        if (isValidStatus(newStatus)) 
-        {
+    public boolean updateStatus(String newStatus) {
+        if (isValidStatus(newStatus)) {
             this.status = newStatus;
             return true;
         }
@@ -129,34 +120,32 @@ public abstract class MediaEntry
     }
 
     /**
-     * Verifies if this tracking item container is fundamentally eligible for review and score additions based on its status.
+     * Determines whether the current entry is eligible for a rating and review.
      *
-     * @return {@code true} if the progression marker evaluates to a finished or completed state; {@code false} otherwise.
+     * @return {@code true} if the status is "Completed"; {@code false} otherwise.
      */
-    public boolean canBeRated() 
-    {
+    public boolean canBeRated() {
         return this.status.equalsIgnoreCase("Completed");
     }
 
     /**
-     * Commits a standardized quantitative metric score out of 10 alongside qualitative review description logs.
+     * Rates the media type from a metric score out of 10 and a qualitative review
+     * description.
+     * The rating must be between 1 and 10 inclusive, and the review can be null or
+     * empty.
      *
-     * @param rating The numeric rating input bounded comprehensively from 1 to 10 inclusive.
-     * @param review The qualitative review overview remarks string.
-     * @return {@code true} if the status evaluates to a valid review state and bounds constraints check out properly; {@code false} otherwise.
+     * @param rating The numeric rating input bounded from 1 to 10 inclusive.
+     * @param review The review overview remarks string.
+     * @return {@code true} if the status evaluates to a valid review state and
+     *         bounds constraints check out properly; {@code false} otherwise.
      */
-    public boolean setRatingAndReview(int rating, String review) 
-    {
-        if (canBeRated() && rating >= 1 && rating <= 10) 
-        {
+    public boolean setRatingAndReview(int rating, String review) {
+        if (canBeRated() && rating >= 1 && rating <= 10) {
             this.rating = rating;
-            
-            if (review == null) {
 
+            if (review == null) {
                 this.review = "";
-            }
-            else
-            {
+            } else {
                 this.review = review;
             }
 
@@ -167,54 +156,56 @@ public abstract class MediaEntry
     }
 
     /**
-     * Assesses whether a qualitative evaluation entry metric profile is verified and active on this instance.
+     * Assesses whether a qualitative evaluation entry metric profile is verified
+     * and active on this instance.
      *
-     * @return {@code true} if a user-supplied score evaluation is current; {@code false} if the log profile is unrated.
+     * @return {@code true} if a user-supplied score evaluation happened;
+     *         {@code false} if the log profile is unrated.
      */
-    public boolean hasRating() 
-    {
+    public boolean hasRating() {
         return this.rating != -1;
     }
 
-    /** 
-     * Returns the media type of the entry.
+    /**
+     * Returns the specific category or media type label of this entry.
      * 
-     * @return the media type.
+     * @return The string representation of the media type.
      */
     public abstract String getMediaType();
 
-      /** 
-     * Returns the media type of the entry.
+    /**
+     * Returns the category-specific attributes and metrics unique to the subclass.
      * 
-     * @return the media type.
+     * @return A formatted detail string describing category specifications.
      */
     public abstract String getSpecificDetails();
 
-      /** 
-     * Returns the media type of the entry.
+    /**
+     * Formats all base and category-specific property values into a string
+     * structured for file storage.
      * 
-     * @return the media type.
+     * @return A single formatted data row representing this media entry for file
+     *         saving.
      */
     public abstract String toFileString();
-    
+
     /**
-     * Combines general tracker attributes and specific media category details into a single printable text block.
+     * Combines general tracker attributes and specific media category details into
+     * a single printable text block.
      *
-     * @return A complete formatted data visualization summary block profile representing this container context.
+     * @return A complete formatted data visualization summary block profile
+     *         representing this container context.
      */
-    public String toString() 
-    {
-        String base = "[" + getMediaType() + "] ID: " + entryId + " | Title: " + title + " | Genre: " + genre + " | Status: " + status;
-       
-        if (hasRating()) 
-        {
+    @Override
+    public String toString() {
+        String base = "[" + getMediaType() + "] ID: " + entryId + " | Title: " + title + " | Genre: " + genre
+                + " | Status: " + status;
+
+        if (hasRating()) {
             base += " | Rating: " + rating + "/10 | Review: \"" + review + "\"";
-        } 
-        else 
-        {
+        } else {
             base += " | Rating: Unrated";
         }
         return base + "\n    -> " + getSpecificDetails();
     }
 }
-       
