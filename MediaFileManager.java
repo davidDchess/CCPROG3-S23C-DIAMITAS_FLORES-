@@ -46,21 +46,14 @@ public class MediaFileManager
     }
 
     /**
-     * Loads media entries from a text file into a new MediaLibrary object.
+     * Loads a media library from a file.
      *
      * @param fileName The name of the file to load from.
-     * @return A MediaLibrary containing the loaded entries.
+     * @return The loaded media library, or null if the file was not loaded.
      */
     public MediaLibrary loadLibrary(String fileName)
     {
         MediaLibrary library = new MediaLibrary();
-
-        if (fileName == null)
-        {
-            return library;
-        }
-
-        int highestId = 0;
 
         try
         {
@@ -70,36 +63,24 @@ public class MediaFileManager
             while (fileReader.hasNextLine())
             {
                 String line = fileReader.nextLine();
+                MediaEntry entry = createEntryFromLine(line);
 
-                if (!line.trim().equals(""))
+                if (entry != null)
                 {
-                    MediaEntry entry = createEntryFromLine(line);
-
-                    if (entry != null)
-                    {
-                        library.addEntry(entry);
-
-                        if (entry.getEntryId() > highestId)
-                        {
-                            highestId = entry.getEntryId();
-                        }
-                    }
+                    library.addEntry(entry);
                 }
             }
 
             fileReader.close();
+            syncNextEntryId(library);
 
-            for (int i = 0; i < highestId; i++)
-            {
-                library.generateEntryId();
-            }
+            return library;
         }
         catch (FileNotFoundException e)
         {
-            System.out.println("Error: File not found. A new empty library will be used.");
+            System.out.println("Error: File not found.");
+            return null;
         }
-
-        return library;
     }
 
     /**
@@ -184,6 +165,31 @@ public class MediaFileManager
         {
             System.out.println("Error: Invalid file format.");
             return null;
+        }
+    }
+
+    
+    /**
+     * Updates the next entry ID after loading entries from a file.
+     *
+     * @param library The media library to update.
+     */
+    private void syncNextEntryId(MediaLibrary library)
+    {
+        int highestId = 0;
+        ArrayList<MediaEntry> entries = library.getAllEntries();
+
+        for (int i = 0; i < entries.size(); i++)
+        {
+            if (entries.get(i).getEntryId() > highestId)
+            {
+                highestId = entries.get(i).getEntryId();
+            }
+        }
+
+        for (int i = 0; i < highestId; i++)
+        {
+            library.generateEntryId();
         }
     }
 }
