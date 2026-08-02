@@ -45,4 +45,14 @@ public class UserProfile {
     public MediaLibrary getLibrary() {
         return library;
     }
+    /**
+     * Updates the user's media library.
+     *
+     * @param library The new media Library
+     */
+    public void setLibrary(MediaLibrary library){
+      this.library = library;
+  }
+  
 }
+
